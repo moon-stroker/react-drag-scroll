@@ -1,6 +1,6 @@
 {
   "name": "react-drag-scroll",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React drag scroll component",
   "main": "src/Scrollable.js",
   "repository": {
