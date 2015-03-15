@@ -2,15 +2,7 @@
   "name": "react-drag-scroll",
   "version": "0.1.1",
   "description": "React drag scroll component",
-  "main": "src/Scrollable.js",
-  "scripts": {
-    "watch": "watchify --debug src/Scrollable.js -o build/app.js -v",
-    "build": "browserify src/Scrollable.js | uglifyjs --compress --mangle -o build/app.js -- -",
-    "test": "mochify",
-    "test-watch": "mochify --watch",
-    "cover": "node cover.js && cat lcov.info | coveralls && rm lcov.info",
-    "clean": "rm build/app.js"
-  },
+  "main": "build/app.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tomkp/react-drag-scroll.git"
@@ -24,6 +16,13 @@
     "url": "https://github.com/tomkp/react-drag-scroll/issues"
   },
   "homepage": "https://github.com/tomkp/react-drag-scroll",
+  "dependencies": {
+    "console-polyfill": "^0.2.0",
+    "es5-shim": "^4.1.0",
+    "react": "^0.12.2",
+    "react-router": "^0.12.4",
+    "xhr": "^2.0.1"
+  },
   "devDependencies": {
     "babelify": "^5.0.4",
     "browserify": "^9.0.3",
@@ -35,12 +34,13 @@
     "uglify-js": "^2.4.16",
     "watchify": "^2.4.0"
   },
-  "dependencies": {
-    "console-polyfill": "^0.2.0",
-    "es5-shim": "^4.1.0",
-    "react": "^0.12.2",
-    "react-router": "^0.12.4",
-    "xhr": "^2.0.1"
+  "scripts": {
+    "watch": "watchify --debug src/Scrollable.js -o build/app.js -v",
+    "build": "browserify src/Scrollable.js | uglifyjs --compress --mangle -o build/app.js -- -",
+    "test": "mochify",
+    "test-watch": "mochify --watch",
+    "cover": "node cover.js && cat lcov.info | coveralls && rm lcov.info",
+    "clean": "rm build/app.js"
   },
   "browserify": {
     "transform": [
