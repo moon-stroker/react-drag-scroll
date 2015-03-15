@@ -19,9 +19,7 @@
   "dependencies": {
     "console-polyfill": "^0.2.0",
     "es5-shim": "^4.1.0",
-    "react": "^0.12.2",
-    "react-router": "^0.12.4",
-    "xhr": "^2.0.1"
+    "react": "^0.12.2"
   },
   "devDependencies": {
     "babelify": "^5.0.4",
