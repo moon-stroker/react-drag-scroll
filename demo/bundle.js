@@ -20045,19 +20045,66 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 
 var React = _interopRequire(require("react/addons"));
 
+var Sync = _interopRequire(require("./Sync"));
+
+var Viewport = _interopRequire(require("./Viewport"));
+
 var Scrollable = React.createClass({
     displayName: "Scrollable",
 
     pushed: false,
+    scrollable: true,
+
+    getInitialState: function getInitialState() {
+        return {
+            scrollTop: 0,
+            scrollLeft: 0
+        };
+    },
 
     componentDidMount: function componentDidMount() {
+        var _this = this;
+
         document.addEventListener("mouseup", this.onUp);
         document.addEventListener("mousemove", this.onMove);
+        this.intervalId = setInterval(function () {
+            _this.scrollable = true;
+        }, 100);
+        this.getDOMNode().addEventListener("scroll", this.onScroll);
     },
 
     componentWillUnmount: function componentWillUnmount() {
         document.removeEventListener("mouseup", this.onUp);
         document.removeEventListener("mousemove", this.onMove);
+        this.clearInterval(this.intervalId);
+        this.scrollable = false;
+        this.getDOMNode().removeEventListener("scroll", this.onScroll);
+    },
+
+    onScroll: function onScroll(event) {
+
+        //        console.info('onScroll', this.scrollable);
+
+        if (this.scrollable) {
+
+            console.info("onScroll", event);
+
+            var target = event.target;
+            //            var elements = event.data.elements;
+
+            //            var axis = event.axis;
+            //            if (axis === 'xy' || axis === 'y') {
+            ////                elements.scrollTop(target.scrollTop());
+            //            }
+            //            if (axis === 'xy' || axis === 'x') {
+            ////                elements.scrollLeft(target.scrollLeft());
+            //            }
+
+            this.setState({
+                scrollTop: target.scrollTop,
+                scrollLeft: target.scrollLeft
+            });
+        }
     },
 
     onDown: function onDown(e) {
@@ -20091,20 +20138,40 @@ var Scrollable = React.createClass({
             cursor: "move",
             overflow: "auto"
         };
+
+        var scrollTop = this.state.scrollTop;
+        var scrollLeft = this.state.scrollLeft;
+        var children = this.props.children.map(function (child) {
+            console.info("child", child);
+            if (child.type && child.type.displayName === "Sync") {
+                return React.addons.cloneWithProps(child, {
+                    scrollTop: scrollTop,
+                    scrollLeft: scrollLeft
+                });
+            } else {
+                return React.createElement(
+                    Viewport,
+                    null,
+                    child
+                );
+            }
+        });
+        //children.push(<Sync />);
+        //console.info(<Sync />);
         return React.createElement(
             "div",
             { ref: "scroller",
                 className: classes.join(" "),
                 style: style,
                 onMouseDown: this.onDown },
-            this.props.children
+            children
         );
     }
 });
 
 module.exports = Scrollable;
 
-},{"react/addons":3}],166:[function(require,module,exports){
+},{"./Sync":166,"./Viewport":167,"react/addons":3}],166:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -20117,48 +20184,21 @@ var Sync = React.createClass({
     scrollable: true,
 
     componentDidMount: function componentDidMount() {
-        var _this = this;
-
         console.info("Sync.componentDidMount", this, this.props);
-        this.intervalId = setInterval(function () {
-            _this.scrollable = true;
-        }, 100);
-        this.getDOMNode().addEventListener("scroll", this.onScroll);
     },
 
     componentWillUnmount: function componentWillUnmount() {
         console.info("Sync.componentDidMount");
-        this.clearInterval(this.intervalId);
-        this.scrollable = false;
-        this.getDOMNode().removeEventListener("scroll", this.onScroll);
-    },
-
-    onScroll: function onScroll(event) {
-
-        console.info("onScroll", this.scrollable);
-
-        if (this.scrollable) {
-
-            console.info("onScroll", event, event.data.target, event.data.elements);
-
-            var target = event.data.target;
-            var elements = event.data.elements;
-
-            var axis = event.data.axis;
-            if (axis === "xy" || axis === "y") {
-                elements.scrollTop(target.scrollTop());
-            }
-            if (axis === "xy" || axis === "x") {
-                elements.scrollLeft(target.scrollLeft());
-            }
-        }
     },
 
     render: function render() {
         console.info("Sync.render");
 
         var classes = ["Sync", this.props.orientation];
-        var style = {};
+        var style = {
+            //scrollTop: this.props.scrollTop,
+            scrollLeft: this.props.scrollLeft
+        };
         return React.createElement(
             "div",
             { className: classes.join(" "),
@@ -20169,5 +20209,41 @@ var Sync = React.createClass({
 });
 
 module.exports = Sync;
+
+},{"react/addons":3}],167:[function(require,module,exports){
+"use strict";
+
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var React = _interopRequire(require("react/addons"));
+
+var Viewport = React.createClass({
+    displayName: "Viewport",
+
+    scrollable: true,
+
+    componentDidMount: function componentDidMount() {
+        console.info("Viewport.componentDidMount", this, this.props);
+    },
+
+    componentWillUnmount: function componentWillUnmount() {
+        console.info("Viewport.componentDidMount");
+    },
+
+    render: function render() {
+        console.info("Viewport.render");
+
+        var classes = ["Viewport", this.props.orientation];
+        var style = {};
+        return React.createElement(
+            "div",
+            { className: classes.join(" "),
+                style: style },
+            this.props.children
+        );
+    }
+});
+
+module.exports = Viewport;
 
 },{"react/addons":3}]},{},[1]);

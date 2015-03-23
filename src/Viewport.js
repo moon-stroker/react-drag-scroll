@@ -1,28 +1,27 @@
 import React from 'react/addons';
 
 
-let Sync = React.createClass({
+let Viewport = React.createClass({
 
     scrollable: true,
 
 
     componentDidMount() {
-        console.info('Sync.componentDidMount', this, this.props);
+        console.info('Viewport.componentDidMount', this, this.props);
     },
 
 
     componentWillUnmount() {
-        console.info('Sync.componentDidMount');
+        console.info('Viewport.componentDidMount');
     },
 
 
     render() {
-        console.info('Sync.render');
+        console.info('Viewport.render');
 
-        let classes = ['Sync', this.props.orientation];
+        let classes = ['Viewport', this.props.orientation];
         let style = {
-            //scrollTop: this.props.scrollTop,
-            scrollLeft: this.props.scrollLeft
+
         };
         return (
             <div className={classes.join(' ')}
@@ -34,4 +33,4 @@ let Sync = React.createClass({
 });
 
 
-export default Sync;
+export default Viewport;
