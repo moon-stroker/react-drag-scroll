@@ -38,6 +38,8 @@
     "test": "mochify",
     "test-watch": "mochify --watch",
     "cover": "node cover.js && cat lcov.info | coveralls && rm lcov.info",
+    "demo": "browserify demo/Example.js -t -o demo/bundle.js",
+    "demoify": "watchify demo/Example.js -t -o demo/bundle.js",
     "clean": "rm build/app.js"
   },
   "browserify": {
