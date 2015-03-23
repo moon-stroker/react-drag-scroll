@@ -7,6 +7,8 @@ var React = _interopRequire(require("react"));
 
 var Scrollable = _interopRequire(require("../src/Scrollable"));
 
+var Sync = _interopRequire(require("../src/Sync"));
+
 var Example = React.createClass({
     displayName: "Example",
 
@@ -14,6 +16,11 @@ var Example = React.createClass({
         return React.createElement(
             Scrollable,
             null,
+            React.createElement(
+                Sync,
+                { orientation: "X" },
+                React.createElement("div", { className: "xaxis" })
+            ),
             React.createElement("div", { className: "inner" })
         );
     }
@@ -24,7 +31,7 @@ var Example = React.createClass({
 
 React.render(React.createElement(Example, null), document.body);
 
-},{"../src/Scrollable":165,"react":164}],2:[function(require,module,exports){
+},{"../src/Scrollable":165,"../src/Sync":166,"react":164}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -20096,5 +20103,71 @@ var Scrollable = React.createClass({
 });
 
 module.exports = Scrollable;
+
+},{"react/addons":3}],166:[function(require,module,exports){
+"use strict";
+
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var React = _interopRequire(require("react/addons"));
+
+var Sync = React.createClass({
+    displayName: "Sync",
+
+    scrollable: true,
+
+    componentDidMount: function componentDidMount() {
+        var _this = this;
+
+        console.info("Sync.componentDidMount", this, this.props);
+        this.intervalId = setInterval(function () {
+            _this.scrollable = true;
+        }, 100);
+        this.getDOMNode().addEventListener("scroll", this.onScroll);
+    },
+
+    componentWillUnmount: function componentWillUnmount() {
+        console.info("Sync.componentDidMount");
+        this.clearInterval(this.intervalId);
+        this.scrollable = false;
+        this.getDOMNode().removeEventListener("scroll", this.onScroll);
+    },
+
+    onScroll: function onScroll(event) {
+
+        console.info("onScroll", this.scrollable);
+
+        if (this.scrollable) {
+
+            console.info("onScroll", event, event.data.target, event.data.elements);
+
+            var target = event.data.target;
+            var elements = event.data.elements;
+
+            var axis = event.data.axis;
+            if (axis === "xy" || axis === "y") {
+                elements.scrollTop(target.scrollTop());
+            }
+            if (axis === "xy" || axis === "x") {
+                elements.scrollLeft(target.scrollLeft());
+            }
+        }
+    },
+
+    render: function render() {
+        console.info("Sync.render");
+
+        var classes = ["Sync", this.props.orientation];
+        var style = {};
+        return React.createElement(
+            "div",
+            { className: classes.join(" "),
+                style: style },
+            this.props.children
+        );
+    }
+});
+
+module.exports = Sync;
 
 },{"react/addons":3}]},{},[1]);

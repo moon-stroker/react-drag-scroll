@@ -1,5 +1,4 @@
 import React from 'react/addons';
-import AxisX from './AxisX';
 
 let Scrollable = React.createClass({
 
