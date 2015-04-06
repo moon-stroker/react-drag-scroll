@@ -35,7 +35,7 @@
   "scripts": {
     "watch": "watchify --debug src/Scrollable.js -o build/app.js -v",
     "build": "browserify src/Scrollable.js | uglifyjs --compress --mangle -o build/app.js -- -",
-    "test": "mochify",
+    "test": "mochify -R spec",
     "test-watch": "mochify --watch",
     "cover": "node cover.js && cat lcov.info | coveralls && rm lcov.info",
     "demo": "browserify demo/Example.js -t -o demo/bundle.js",
